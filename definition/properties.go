@@ -3,12 +3,33 @@ package definition
 import "time"
 
 type NotionProperty struct {
-	Title    *[]NotionRichText   `json:"title,omitempty"`
-	RichText *[]NotionRichText   `json:"rich_text,omitempty"`
-	Email    string              `json:"email,omitempty"`
-	Checkbox *bool               `json:"checkbox,omitempty"`
-	Date     *NotionDateProperty `json:"date,omitempty"`
+	Title    *[]NotionRichText     `json:"title,omitempty"`
+	RichText *[]NotionRichText     `json:"rich_text,omitempty"`
+	Email    string                `json:"email,omitempty"`
+	Checkbox *bool                 `json:"checkbox,omitempty"`
+	Date     *NotionDateProperty   `json:"date,omitempty"`
+	Select   *NotionSelectProperty `json:"select,omitempty"`
+	Number   *int                  `json:"number,omitempty"`
 }
+
+func PropertyNumber(n int) *NotionProperty {
+	return &NotionProperty{
+		Number: &n,
+	}
+}
+
+type NotionSelectProperty struct {
+	Name string `json:"name"`
+}
+
+func PropertySelect(opt string) *NotionProperty {
+	return &NotionProperty{
+		Select: &NotionSelectProperty{
+			Name: opt,
+		},
+	}
+}
+
 type NotionDateProperty struct {
 	Start time.Time  `json:"start"`
 	End   *time.Time `json:"end,omitempty"`

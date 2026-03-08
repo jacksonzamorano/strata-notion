@@ -6,13 +6,14 @@ import (
 
 var Manifest = component.ComponentManifest{
 	Name:    "notion",
-	Version: "1.0.0",
+	Version: "1.1.0",
 }
 
 var Setup = component.Define[SetupInput, SetupOutput](Manifest, "setup")
 var FindPage = component.Define[FindPageInput, PagesOutput](Manifest, "find-page")
 var QueryDataSource = component.Define[QueryDataSourceInput, PagesOutput](Manifest, "query-datasource")
 var CreatePage = component.Define[CreatePageInput, CreatePageOutput](Manifest, "create-page")
+var EditPage = component.Define[EditPageInput, CreatePageOutput](Manifest, "edit-page")
 var Append = component.Define[AppendToBlockInput, struct{}](Manifest, "append")
 var LaunchNotion = component.Define[struct{}, struct{}](Manifest, "launch")
 
@@ -42,6 +43,11 @@ type QueryDataSourceInput struct {
 type AppendToBlockInput struct {
 	BlockId    string
 	Components []any
+}
+
+type EditPageInput struct {
+	PageId     string
+	Properties map[string]any
 }
 
 type CreatePageInput struct {

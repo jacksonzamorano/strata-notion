@@ -29,6 +29,9 @@ type NotionParent struct {
 	DatabaseId   string `json:"database_id,omitempty"`
 	Type         string `json:"type"`
 }
+type NotionEditPageRequest struct {
+	Properties map[string]any `json:"properties"`
+}
 type NotionCreatePageRequest struct {
 	Parent     *NotionParent  `json:"parent,omitempty"`
 	Properties map[string]any `json:"properties"`

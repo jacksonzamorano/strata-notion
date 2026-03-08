@@ -73,6 +73,20 @@ func createPage(in *component.ComponentInput[d.CreatePageInput, d.CreatePageOutp
 	})
 }
 
+func editPage(in *component.ComponentInput[d.EditPageInput, d.CreatePageOutput], container *component.ComponentContainer) *component.ComponentReturn[d.CreatePageOutput] {
+	pageRequest := NotionEditPageRequest{
+		Properties: in.Body.Properties,
+	}
+	page, err := notion[NotionCreatePageResponse]("PATCH", "/v1/pages/"+in.Body.PageId, pageRequest, container)
+	if err != nil {
+		container.Logger.Log("Error when editing page: %s", err.Error())
+		return in.Error("Error when editing page.")
+	}
+	return in.Return(d.CreatePageOutput{
+		PageId: page.Id,
+	})
+}
+
 func getPage(in *component.ComponentInput[d.FindPageInput, d.PagesOutput], container *component.ComponentContainer) *component.ComponentReturn[d.PagesOutput] {
 	req := NotionSearchRequest{
 		Query: in.Body.Query,
@@ -127,6 +141,7 @@ func main() {
 		component.Mount(d.QueryDataSource, queryDataSource),
 		component.Mount(d.Append, appendBlock),
 		component.Mount(d.CreatePage, createPage),
+		component.Mount(d.EditPage, editPage),
 		component.Mount(d.LaunchNotion, launch),
 	).Start()
 }
